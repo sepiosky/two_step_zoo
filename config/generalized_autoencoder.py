@@ -5,7 +5,7 @@ def get_base_config(dataset, standalone):
             "valid_batch_size": 128,
             "test_batch_size": 128,
 
-            "make_valid_loader": True,
+            "make_valid_loader": False,
 
             "data_root": "data/",
             "logdir_root": "runs/"

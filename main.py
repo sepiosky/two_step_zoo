@@ -87,6 +87,10 @@ pp.pprint(de_cfg)
 print(10*"-" + "shared_cfg" + 10*"-")
 pp.pprint(shared_cfg)
 
+### TODO train_ds, valid_ds and test_ds explicitly to shared_cfg, de_cfg, gae_cfg
+#shared_cfg["train_dset"], shared_cfg["valid_dset"], shared_cfg["test_dset"] = train_dset, test_dset, test_dset
+#de_cfg["train_dset"], de_cfg["valid_dset"], de_cfg["test_dset"] = train_dset, test_dset, test_dset
+#gae_cfg["train_dset"], gae_cfg["valid_dset"], gae_cfg["test_dset"] = train_dset, test_dset, test_dset
 
 train_loader, valid_loader, test_loader = get_loaders_from_config(shared_cfg)
 writer = get_writer(args, gae_cfg=gae_cfg, de_cfg=de_cfg, shared_cfg=shared_cfg)

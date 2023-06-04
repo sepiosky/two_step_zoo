@@ -12,7 +12,9 @@ def get_loaders_from_config(cfg):
 
     Updates `cfg` with dataset information.
     """
+
     train_loader, valid_loader, test_loader = get_loaders(
+        cfg,
         dataset=cfg["dataset"],
         data_root=cfg.get("data_root", "data/"),
         make_valid_loader=cfg["make_valid_loader"],
@@ -34,6 +36,7 @@ def get_loaders_from_config(cfg):
 
 
 def get_loaders(
+        cfg,
         dataset,
         data_root,
         make_valid_loader,
@@ -41,23 +44,25 @@ def get_loaders(
         valid_batch_size,
         test_batch_size
 ):
-    if dataset in ["celeba", "mnist", "fashion-mnist", "cifar10", "svhn"]:
-        train_dset, valid_dset, test_dset = get_image_datasets(dataset, data_root, make_valid_loader)
 
-    elif dataset in ["sphere", "klein", "two_moons"]:
-        train_dset, valid_dset, test_dset = get_generated_datasets(dataset)
+    train_dset, valid_dset, test_dset = cfg.train_dset, cfg.valid_dset, cfg.test_dset
+    # if dataset in ["celeba", "mnist", "fashion-mnist", "cifar10", "svhn"]:
+    #     train_dset, valid_dset, test_dset = get_image_datasets(dataset, data_root, make_valid_loader)
 
-    else:
-        raise ValueError(f"Unknown dataset {dataset}")
+    # elif dataset in ["sphere", "klein", "two_moons"]:
+    #     train_dset, valid_dset, test_dset = get_generated_datasets(dataset)
 
-    train_loader = get_loader(train_dset, train_batch_size, drop_last=True, pin_memory=True)
+    # else:
+    #     raise ValueError(f"Unknown dataset {dataset}")
+
+    train_loader = get_loader(train_dset, train_batch_size, shuffle=True, drop_last=True, pin_memory=True)
 
     if make_valid_loader:
         valid_loader = get_loader(valid_dset, valid_batch_size, drop_last=False, pin_memory=True)
     else:
         valid_loader = None
 
-    test_loader = get_loader(test_dset, test_batch_size, drop_last=False, pin_memory=True)
+    test_loader = get_loader(test_dset, test_batch_size, shuffle=False, drop_last=False, pin_memory=True)
 
     return train_loader, valid_loader, test_loader
 
@@ -66,7 +71,7 @@ def get_loader(dset, batch_size, drop_last, **loader_kwargs):
     return DataLoader(
         dset,
         batch_size=batch_size,
-        shuffle=True,
+        #shuffle=True,
         drop_last=drop_last,
         **loader_kwargs,
     )
