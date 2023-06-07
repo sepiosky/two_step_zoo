@@ -45,7 +45,7 @@ def get_loaders(
         test_batch_size
 ):
 
-    train_dset, valid_dset, test_dset = cfg.train_dset, cfg.valid_dset, cfg.test_dset
+    train_dset, valid_dset, test_dset = cfg["train_dset"], cfg["valid_dset"], cfg["test_dset"]
     # if dataset in ["celeba", "mnist", "fashion-mnist", "cifar10", "svhn"]:
     #     train_dset, valid_dset, test_dset = get_image_datasets(dataset, data_root, make_valid_loader)
 
