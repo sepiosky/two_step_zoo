@@ -218,7 +218,7 @@ class SingleTrainer(BaseTrainer):
 
         self.module.data_min = train_dset.min()
         self.module.data_max = train_dset.max()
-        self.module.data_shape = train_dset[0].shape #train_dset.shape[1:]
+        self.module.data_shape = train_dset[0][0].shape #train_dset.shape[1:]
 
 
         if self.module.whitening_transform:
