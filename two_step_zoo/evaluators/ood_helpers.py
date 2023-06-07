@@ -27,7 +27,10 @@ def ood_acc(
         log_prob = np.zeros(dataloader.dataset.x.shape[0])
 
         ind = 0
-        for batch, _, _ in tqdm(dataloader, leave=False, desc=name):
+        for batch in tqdm(dataloader, leave=False, desc=name):
+            assert len(batch) == 2
+            assert isinstance(batch[1], list)
+            assert len(batch[0].shape) == 4
             batch = batch.to(module.device)
             with torch.no_grad():
                 log_prob_batch = score_fn(batch)

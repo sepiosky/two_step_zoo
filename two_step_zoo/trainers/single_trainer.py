@@ -115,7 +115,10 @@ class BaseTrainer:
             length=len(self.train_loader),
             leave=True
         )
-        for j, (batch, _, idx) in pbar:
+        for j, batch in pbar:
+            assert len(batch) == 2
+            assert isinstance(batch[1], list)
+            assert len(batch[0].shape) == 4
             loss_dict = self.train_single_batch(batch)
 
             if j == 0:
