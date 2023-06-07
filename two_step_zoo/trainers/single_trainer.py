@@ -214,11 +214,11 @@ class SingleTrainer(BaseTrainer):
         return loss_dict
 
     def update_transform_parameters(self):
-        train_dset = self.train_loader.dataset.x
+        train_dset = self.train_loader.dataset #self.train_loader.dataset.x
 
         self.module.data_min = train_dset.min()
         self.module.data_max = train_dset.max()
-        self.module.data_shape = train_dset.shape[1:]
+        self.module.data_shape = train_dset[0].shape #train_dset.shape[1:]
 
 
         if self.module.whitening_transform:

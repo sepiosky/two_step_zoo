@@ -23,9 +23,9 @@ def get_loaders_from_config(cfg):
         test_batch_size=cfg["test_batch_size"]
     )
 
-    train_dataset = train_loader.dataset.x
-    cfg["train_dataset_size"] = train_dataset.shape[0]
-    cfg["data_shape"] = tuple(train_dataset.shape[1:])
+    train_dataset = train_loader.dataset#train_loader.dataset.x
+    cfg["train_dataset_size"] = len(train_dataset)#train_dataset.shape[0]
+    cfg["data_shape"] = tuple(train_dataset[0].shape) #tuple(train_dataset.shape[1:])
     cfg["data_dim"] = int(np.prod(cfg["data_shape"]))
 
     if not cfg["make_valid_loader"]:
