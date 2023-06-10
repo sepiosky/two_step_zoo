@@ -34,10 +34,10 @@ class InceptionHelper():
 
         feats = []
         for batch in tqdm(im_loader, desc=f"Getting {loader_type} features", leave=False, total=loader_len):
-            assert len(batch) == 2
-            assert isinstance(batch[1], list)
+            #assert len(batch) == 3
+            #assert len(batch[1]) == batch[0].shape[0]
             assert len(batch[0].shape) == 4
-            batch = batch.to(self.module.device)
+            batch = batch[0].to(self.module.device)
 
             # Convert grayscale to RGB
             if batch.ndim == 3:
