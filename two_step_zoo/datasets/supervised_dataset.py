@@ -18,6 +18,12 @@ class SupervisedDataset(torch.utils.data.Dataset):
         self.x = x
         self.y = y
 
+    def min(self):
+        return self.x.min()
+
+    def max(self):
+        return self.x.max()
+
     def __len__(self) -> int:
         return self.x.shape[0]
 
