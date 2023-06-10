@@ -117,9 +117,9 @@ class BaseTrainer:
         )
         for j, batch in pbar:
             assert len(batch) == 2
-            assert isinstance(batch[1], list)
+            assert len(batch[1]) == batch[0].shape[0]
             assert len(batch[0].shape) == 4
-            loss_dict = self.train_single_batch(batch)
+            loss_dict = self.train_single_batch(batch[0])
 
             if j == 0:
                 full_loss_dict = loss_dict
