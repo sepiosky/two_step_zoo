@@ -18,6 +18,12 @@ class SupervisedDataset(torch.utils.data.Dataset):
         self.x = x
         self.y = y
 
+    def mean(self):
+        return torch.mean(self.x, dim=0, keepdim=True)
+
+    def std(self):
+        return torch.std(self.x, dim=0, keepdim=True)
+
     def min(self):
         return self.x.min()
 
@@ -27,5 +33,5 @@ class SupervisedDataset(torch.utils.data.Dataset):
     def __len__(self) -> int:
         return self.x.shape[0]
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any, Any]:
-        return self.x[index], self.y[index], index
+    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+        return self.x[index], self.y[index]

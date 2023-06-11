@@ -118,7 +118,7 @@ class BaseTrainer:
         for j, batch in pbar:
             assert len(batch) == 2
             assert len(batch[1]) == batch[0].shape[0]
-            assert len(batch[0].shape) == 4
+            #assert len(batch[0].shape) == 4
             loss_dict = self.train_single_batch(batch[0])
 
             if j == 0:
@@ -226,8 +226,8 @@ class SingleTrainer(BaseTrainer):
 
         if self.module.whitening_transform:
             self.module.set_whitening_params(
-                torch.mean(train_dset, dim=0, keepdim=True),
-                torch.std(train_dset, dim=0, keepdim=True)
+                train_dset.mean(), #torch.mean(train_dset, dim=0, keepdim=True),
+                train_dset.std() #torch.std(train_dset, dim=0, keepdim=True)
             )
 
     def write_checkpoint(self, tag):
