@@ -23,7 +23,7 @@ def get_base_config(dataset, standalone):
         "optimizer": "adam",
         "lr": 0.001,
         "use_lr_scheduler": False,
-        "max_epochs": 100,
+        "max_epochs": 3, #100,
         "max_grad_norm": 10,
 
         "early_stopping_metric": None,
@@ -81,7 +81,7 @@ def get_avb_config(dataset, standalone):
 
     avb_base = {
         "early_stopping_metric": "l2_reconstruction_error",
-        "max_bad_valid_epochs": 10,
+        "max_bad_valid_epochs": 3,#10,
 
         "latent_dim": 20,
 
@@ -110,7 +110,7 @@ def get_avb_config(dataset, standalone):
             "decoder_hidden_dims": [256],
 
             "flatten": True,
-            "max_epochs": 50,
+            "max_epochs": 3,#50,
             "noise_dim": 256,
         }
 
@@ -127,7 +127,7 @@ def get_avb_config(dataset, standalone):
             "decoder_stride": [1, 1, 1, 1],
 
             "flatten": False,
-            "max_epochs": 100,
+            "max_epochs": 3,#100,
             "noise_dim": 256,
         }
 
@@ -142,7 +142,7 @@ def get_bigan_config(dataset, standalone):
 
     bigan_base = {
         "early_stopping_metric": "l2_reconstruction_error",
-        "max_bad_valid_epochs": 50,
+        "max_bad_valid_epochs": 3,#50,
 
         "latent_dim": 20,
 
@@ -176,7 +176,7 @@ def get_bigan_config(dataset, standalone):
             "decoder_hidden_dims": [256],
 
             "flatten": True,
-            "max_epochs": 200,
+            "max_epochs": 3,#200,
         }
 
     elif net == "cnn":
@@ -192,7 +192,7 @@ def get_bigan_config(dataset, standalone):
             "decoder_stride": [1, 1, 1, 1],
 
             "flatten": False,
-            "max_epochs": 200,
+            "max_epochs": 3,#200,
         }
 
     return {
@@ -248,7 +248,7 @@ def get_wae_config(dataset, standalone):
     wae_base = {
         "latent_dim": 20,
 
-        "max_epochs": 300,
+        "max_epochs": 3,#300,
 
         "discriminator_hidden_dims": [256, 256],
 
@@ -264,7 +264,7 @@ def get_wae_config(dataset, standalone):
         "use_rec_lr_scheduler": False,
 
         "early_stopping_metric": "l2_reconstruction_error",
-        "max_bad_valid_epochs": 30,
+        "max_bad_valid_epochs": 3,#30,
 
         "valid_metrics": ["l2_reconstruction_error"],
         "test_metrics": ["l2_reconstruction_error", "fid"],
