@@ -32,6 +32,7 @@ class BaseTrainer:
             evaluator=None,
 
             only_test=False,
+            auc_calculator=None
     ):
         self.module = module
         self.ckpt_prefix = ckpt_prefix
@@ -39,6 +40,7 @@ class BaseTrainer:
         self.train_loader = train_loader
         self.valid_loader = valid_loader
         self.test_loader = test_loader
+        self.auc_calculator = auc_calculator
 
         self.writer = writer
 
@@ -79,6 +81,8 @@ class BaseTrainer:
             self.module.train()
 
             self.train_for_epoch()
+            if self.auc_calculator is not None:
+                self.auc_calculator(self.module.log_prob) #it will only be called in de_estimator so it has log_prob func
             valid_loss = self._validate()
 
             if self.early_stopping_metric:

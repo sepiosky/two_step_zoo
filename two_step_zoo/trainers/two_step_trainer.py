@@ -2,6 +2,8 @@ import os
 from distutils.dir_util import copy_tree
 import torch
 import math
+from tqdm import tqdm
+from sklearn.metrics import roc_auc_score
 
 from ..datasets import get_embedding_loader, remove_drop_last
 from .single_trainer import BaseTrainer
@@ -151,6 +153,29 @@ class SequentialTrainer(BaseTwoStepTrainer):
         if not self.only_test:
             self.gae_trainer.train()
 
+            def auc_softmax_two_step(density_estimator):
+                encoder = self.gae.encode
+                test_loader = self.gae_trainer.test_loader
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+                anomaly_scores = []
+                test_labels = []
+                print('AUC Started ...')
+                with torch.no_grad():
+                    with tqdm(test_loader, unit="batch") as tepoch:
+                        torch.cuda.empty_cache()
+                        for i, (data, target) in enumerate(tepoch):
+                            data, target = data.to(device), target.to(device)
+                            data = torch.clamp(data, 0, 1)
+                            anomaly_scores += density_estimator(encoder(data)).detach().cpu().numpy().tolist()
+                            test_labels += target.detach().cpu().numpy().tolist()
+
+
+                auc = roc_auc_score(test_labels, anomaly_scores)
+                print(f'AUC - score is: {auc * 100}')
+
+                #return auc
+
+            self.de_trainer.auc_calculator = auc_softmax_two_step
             self._set_de_loaders()
             self.de_trainer.train()
 
