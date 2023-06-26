@@ -21,14 +21,14 @@ def batch_or_dataloader(agg_func=torch.cat):
                     labels.append( batch[1].to(ref.device) )
                 if list_out and type(list_out[0]) in (list, tuple):
                     # Each member of list_out is a tuple/list; re-zip them and output a tuple
-                    if kwargs["return_labels"] == True:
-                        return tuple(agg_func(out) for out in zip(*list_out)), labels
+                    if "return_labels" in kwargs.keys() and kwargs["return_labels"] == True:
+                        return tuple(agg_func(out) for out in zip(*list_out)), agg_func(labels)
                     else:
                         return tuple(agg_func(out) for out in zip(*list_out))
                 else:
                     # Output is not a tuple
-                    if kwargs["return_labels"] == True:
-                        return agg_func(list_out), labels
+                    if "return_labels" in kwargs.keys() and kwargs["return_labels"] == True:
+                        return agg_func(list_out), agg_func(labels)
                     else:
                         return agg_func(list_out)
 
