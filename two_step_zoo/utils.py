@@ -15,15 +15,22 @@ def batch_or_dataloader(agg_func=torch.cat):
         @functools.wraps(batch_fn)
         def batch_fn_wrapper(ref, batch_or_dataloader, **kwargs):
             if isinstance(batch_or_dataloader, DataLoader): # Input is a dataloader
-                list_out = [batch_fn(ref, batch[0].to(ref.device), **kwargs)
-                            for batch in batch_or_dataloader]
-
+                list_out, labels = [], []
+                for batch in batch_or_dataloader:
+                    list_out.append( batch_fn(ref, batch[0].to(ref.device), **kwargs) )
+                    labels.append( batch[1].to(ref.device) )
                 if list_out and type(list_out[0]) in (list, tuple):
                     # Each member of list_out is a tuple/list; re-zip them and output a tuple
-                    return tuple(agg_func(out) for out in zip(*list_out))
+                    if kwargs["return_labels"] == True:
+                        return tuple(agg_func(out) for out in zip(*list_out)), labels
+                    else:
+                        return tuple(agg_func(out) for out in zip(*list_out))
                 else:
                     # Output is not a tuple
-                    return agg_func(list_out)
+                    if kwargs["return_labels"] == True:
+                        return agg_func(list_out), labels
+                    else:
+                        return agg_func(list_out)
 
             else: # Input is a batch
                 return batch_fn(ref, batch_or_dataloader, **kwargs)
