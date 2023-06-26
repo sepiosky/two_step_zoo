@@ -90,10 +90,11 @@ class BaseTwoStepTrainer:
                 loader = remove_drop_last(loader)
 
             with torch.no_grad():
-                encoded_data = self.gae.encode(loader)
+                encoded_data, labels = self.gae.encode(loader, return_labels=True)
 
             encoded_dataloader = get_embedding_loader(
                 embeddings=encoded_data,
+                labels=labels,
                 batch_size=loader.batch_size,
                 drop_last=loader_drop_last,
                 role=loader.dataset.role

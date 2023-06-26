@@ -31,10 +31,13 @@ class GeneralizedAutoEncoder(TwoStepComponent):
         self.decoder = decoder
 
     @batch_or_dataloader()
-    def encode(self, x):
+    def encode(self, x, return_labels=False):
         # NOTE: Assume encode *only* wants a single output
         x = self._data_transform(x)
-        return self._encode_transformed_without_tuple(x)
+        if return_labels:
+            return self.encode_transformed(x)
+        else:
+            return self._encode_transformed_without_tuple(x)
 
     @batch_or_dataloader()
     def encode_transformed(self, x):

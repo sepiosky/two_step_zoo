@@ -77,11 +77,12 @@ def get_loader(dset, batch_size, drop_last, **loader_kwargs):
     )
 
 
-def get_embedding_loader(embeddings, batch_size, drop_last, role):
+def get_embedding_loader(embeddings, batch_size, drop_last, role, labels=None):
     dataset = SupervisedDataset(
         name="embeddings",
         role=role,
-        x=embeddings
+        x=embeddings,
+        y=labels
     )
     return get_loader(dataset, batch_size, drop_last)
 
